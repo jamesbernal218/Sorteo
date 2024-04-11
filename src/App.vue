@@ -1,26 +1,41 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <AddParticipant @participant-added="addParticipant" />
+    <ParticipantsList :participants="participants" />
+    <button @click="drawWinners">Realizar sorteo</button>
+    <WinnersList :winners="winners" />
+  </div>
+  <div class="bg-indigo-500">
+  <p class="bg-indigo-500">gg</p>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import AddParticipant from './components/AddParticipant.vue';
+import ParticipantsList from './components/ParticipantsList.vue';
+import WinnersList from './components/WinnersList.vue';
 
 export default {
-  name: 'App',
   components: {
-    HelloWorld
+    AddParticipant,
+    ParticipantsList,
+    WinnersList
+  },
+  data() {
+    return {
+      participants: [],
+      winners: []
+    };
+  },
+  methods: {
+    addParticipant(name) {
+      this.participants.push(name);
+    },
+    drawWinners() {
+      const numberOfWinners = Math.min(3, this.participants.length);
+      const shuffledParticipants = [...this.participants].sort(() => Math.random() - 0.5);
+      this.winners = shuffledParticipants.slice(0, numberOfWinners);
+    }
   }
-}
+};
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
